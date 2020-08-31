@@ -1,5 +1,8 @@
 name: 'Cirrus Action'
 description: 'Run Cirrus Tasks'
+branding:
+  icon: 'box'  
+  color: 'black'
 inputs:
   version:
     description: 'Cirrus CLI Version'
