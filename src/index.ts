@@ -4,16 +4,16 @@ import {exec} from "@actions/exec";
 import {chmodSync} from "fs";
 
 async function getCLI(version: string) {
-  let path = version !== 'latest' ? await getCachedCLI(version) : await getLatestCLI();
-  chmodSync(path, '755');
-  return path;
+    let path = version !== 'latest' ? await getCachedCLI(version) : await getLatestCLI();
+    chmodSync(path, '755');
+    return path;
 }
 
 async function getCachedCLI(version: string) {
     let cliPath = tc.find("cirrus", version);
 
     if (cliPath) {
-        core.debug(`Tool found in cache ${cliPath}`);
+        core.info(`Cirrus CLI binary found in cache ${cliPath}`);
         return cliPath;
     }
     let cliBinaryURL = "https://github.com/cirruslabs/cirrus-cli/releases/" + version + "/download/cirrus-linux-amd64";
@@ -32,7 +32,12 @@ async function run() {
         const taskName = core.getInput('task');
 
         let cliBinaryPath = await getCLI(cliVersion);
-        await exec(cliBinaryPath, ["run", taskName]);
+
+        let runArguments = ["run"];
+        if (taskName != "") {
+            runArguments.push(taskName);
+        }
+        await exec(`"${cliBinaryPath}"`, runArguments);
     } catch (error) {
         core.setFailed(error.message);
     }
