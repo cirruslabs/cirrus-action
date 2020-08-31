@@ -1,0 +1,23 @@
+{
+  "name": "cirrus-action",
+  "version": "1.0.0",
+  "description": "GitHub Action to run Cirrus Tasks",
+  "main": "src/index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cirruslabs/cirrus-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cirruslabs/cirrus-action/issues"
+  },
+  "homepage": "https://github.com/cirruslabs/cirrus-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.5",
+    "@actions/exec": "^1.0.4",
+    "@actions/tool-cache": "^1.6.0",
+    "@types/node": "^14.6.2"
+  }
+}

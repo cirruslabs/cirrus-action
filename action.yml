@@ -1,0 +1,15 @@
+name: 'Cirrus Action'
+description: 'Run Cirrus Tasks'
+inputs:
+  version:
+    description: 'Cirrus CLI Version'
+    required: false
+    default: 'latest'
+  task:
+    description: 'A particular task to run. By default, Cirrus CLI runs all tasks sequentially.'
+    required: false
+    default: ''
+
+runs:
+  using: 'node12'
+  main: 'index.ts'
