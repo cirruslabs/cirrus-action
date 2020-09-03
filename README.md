@@ -1,4 +1,4 @@
-# Hello world javascript action
+# Action to run dockerized Cirrus Tasks
 
 This action installs [Cirrus CLI](https://github.com/cirruslabs/cirrus-cli) and runs Cirrus Tasks.
 
