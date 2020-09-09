@@ -34,7 +34,9 @@ async function run() {
         let cliBinaryPath = await getCLI(cliVersion);
 
         await startHTTPCachingServer();
-        let runArguments = ["run", "--environment", "CIRRUS_HTTP_CACHE_HOST=localhost:12321"];
+        // use Docker bridge
+        let localhostIP = process.platform === 'linux' ? '172.17.0.1' : 'localhost'
+        let runArguments = ["run", "--environment", `CIRRUS_HTTP_CACHE_HOST=${localhostIP}:12321`];
         if (taskName != "") {
             runArguments.push(taskName);
         }
