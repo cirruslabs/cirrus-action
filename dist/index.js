@@ -3170,7 +3170,8 @@ function run() {
             const cliVersion = core.getInput('version');
             const taskName = core.getInput('task');
             let cliBinaryPath = yield getCLI(cliVersion);
-            let runArguments = ["run"];
+            yield startHTTPCachingServer();
+            let runArguments = ["run", "--environment", "CIRRUS_HTTP_CACHE_HOST=localhost:12321"];
             if (taskName != "") {
                 runArguments.push(taskName);
             }
@@ -3178,6 +3179,24 @@ function run() {
         }
         catch (error) {
             core.setFailed(error.message);
+        }
+    });
+}
+function startHTTPCachingServer() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let runArguments = [
+            "run", "-d", "-p", `12321:12321`,
+            "--name", "cache_proxy",
+            "--env", "ACTIONS_CACHE_URL",
+            "--env", "ACTIONS_RUNTIME_URL",
+            "--env", "ACTIONS_RUNTIME_TOKEN",
+            "ghcr.io/cirruslabs/actions-http-cache-proxy:latest"
+        ];
+        try {
+            yield exec_1.exec(`"docker"`, runArguments);
+        }
+        catch (e) {
+            core.error(e);
         }
     });
 }

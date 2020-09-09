@@ -33,13 +33,31 @@ async function run() {
 
         let cliBinaryPath = await getCLI(cliVersion);
 
-        let runArguments = ["run"];
+        await startHTTPCachingServer();
+        let runArguments = ["run", "--environment", "CIRRUS_HTTP_CACHE_HOST=localhost:12321"];
         if (taskName != "") {
             runArguments.push(taskName);
         }
         await exec(`"${cliBinaryPath}"`, runArguments);
     } catch (error) {
         core.setFailed(error.message);
+    }
+}
+
+async function startHTTPCachingServer() {
+    let runArguments = [
+        "run", "-d", "-p", `12321:12321`,
+        "--name", "cache_proxy",
+        "--env", "ACTIONS_CACHE_URL",
+        "--env", "ACTIONS_RUNTIME_URL",
+        "--env", "ACTIONS_RUNTIME_TOKEN",
+        "ghcr.io/cirruslabs/actions-http-cache-proxy:latest"
+    ];
+
+    try {
+        await exec(`"docker"`, runArguments);
+    } catch (e) {
+        core.error(e)
     }
 }
 
